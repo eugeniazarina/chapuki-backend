@@ -227,7 +227,7 @@ async function sendActivationEmail(email, displayCode, fullName = '') {
         await transporter.sendMail({
             from: `"Čāpuki" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: 'Čāpuku meža stāsti – aktivācijas kods',
+            subject: 'Čāpuku Meža Stāsti – aktivācijas kods',
             html: `
                 <div style="font-family: sans-serif; max-width: 500px; margin: auto;">
                     <h2>🌲 Paldies par pirkumu!</h2>
@@ -276,15 +276,15 @@ app.post('/create-checkout-session', async (req, res) => {
                 price_data: {
                     currency: 'eur',
                     product_data: {
-                        name: 'Čāpuku meža stāsti – 1. grāmata',
+                        name: 'Čāpuku Meža stāsti – 1. grāmata',
                         description: 'Pilna piekļuve grāmatai'                   },
                     unit_amount: 499,
                 },
                 quantity: 1,
             }],
             mode: 'payment',
-            success_url: 'https://talers.lv/apps/chapuki/success',  // ← Donde está tu app
-            cancel_url: 'https://talers.lv/apps/chapuki/cancel',    // ← Donde está tu app
+            success_url: 'https://talers.lv/apps/chapuki/success.html',  // ← Donde está tu app
+            cancel_url: 'https://talers.lv/apps/chapuki/cancel.html',    // ← Donde está tu app
             metadata: {
                 device_id: deviceId || 'unknown',
                 ip_address: ipAddress
@@ -523,9 +523,9 @@ if (process.env.NODE_ENV !== 'production') {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log(`🚀 Serveris darbojas: http://192.168.18.6:${PORT}`);
-    console.log(`📊 Webhook: http://192.168.18.6:${PORT}/webhook`);
-    console.log(`🔑 Verifikācija: http://192.168.18.6:${PORT}/verify-code`);
+    console.log(`🚀 Serveris darbojas uz porta: ${PORT}`);
+    console.log(`📊 Webhook: https://chapuki-backend.onrender.com/webhook`);
+    console.log(`🔑 Verifikācija: https://chapuki-backend.onrender.com/verify-code`);
     console.log(`🌍 Geolokācija pēc IP (bez GPS) - darbojas ar JEBKURU IP`);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 });
