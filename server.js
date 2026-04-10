@@ -362,7 +362,7 @@ app.post('/verify-code', async (req, res) => {
         const [rows] = await pool.query(
             `SELECT a.*, c.email, c.full_name
              FROM activations a
-             JOIN customers c ON a.customer_id = c.id
+                      JOIN customers c ON a.customer_id = c.id
              WHERE a.activation_code = ? AND a.is_used = FALSE`,
             [code]
         );
@@ -418,7 +418,7 @@ if (process.env.NODE_ENV !== 'production') {
                     a.country_code, a.country_name, a.activated_at,
                     c.email, c.full_name
              FROM activations a
-             JOIN customers c ON a.customer_id = c.id
+                      JOIN customers c ON a.customer_id = c.id
              ORDER BY a.created_at DESC LIMIT 20`
         );
         res.json(rows);
@@ -444,4 +444,26 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`📊 Webhook: https://chapuki-backend.onrender.com/webhook`);
     console.log(`🔑 Verifikācija: https://chapuki-backend.onrender.com/verify-code`);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+});
+app.get('/test-db', async (req, res) => {
+    try {
+        const conn = await pool.getConnection();
+        await conn.query('SELECT 1');
+        conn.release();
+        res.json({
+            status: '✅ DB savienojums veiksmīgs',
+            host: process.env.DB_HOST,
+            database: process.env.DB_NAME,
+            user: process.env.DB_USER,
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: '❌ DB savienojums neizdevās',
+            error: err.message,
+            code: err.code,
+            host: process.env.DB_HOST,
+            database: process.env.DB_NAME,
+            user: process.env.DB_USER,
+        });
+    }
 });
